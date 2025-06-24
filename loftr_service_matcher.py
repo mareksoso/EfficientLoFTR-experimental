@@ -26,7 +26,9 @@ TARGET_SIZE = (1536, 768)
 # --- Initialize model ---
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 matcher = LoFTR(config=opt_default_cfg)
-matcher.load_state_dict(torch.load(sys.argv[1], map_location=device)['state_dict'])
+#matcher.load_state_dict(torch.load(sys.argv[1], map_location=device)['state_dict'])
+checkpoint = torch.load(sys.argv[1], map_location=device, weights_only=False)
+matcher.load_state_dict(checkpoint['state_dict'])
 matcher = matcher.to(device).eval()
 
 def receive_full_message(conn, buffer_size=1024):
